@@ -16,7 +16,7 @@ export interface CompileOptions
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [compilerOptions?](./express-typescript-compile.compileoptions.compileroptions.md) | any | <i>(Optional)</i> Overwrites for the tsconfig.json |
-|  [transformers?](./express-typescript-compile.compileoptions.transformers.md) | Array&lt;TransformerFactory&lt;SourceFile&gt; \| CustomTransformerFactory&gt; | <i>(Optional)</i> Custom additional source files transformers |
-|  [tsConfigFile?](./express-typescript-compile.compileoptions.tsconfigfile.md) | string | <i>(Optional)</i> Path to tsconfig.json file, default is tsconfig.json in working dir |
+|  [compilerOptions?](./express-typescript-compile.compileoptions.compileroptions.md) | any | <i>(Optional)</i> Overwrites for the tsconfig.json compilerOptions options. For more info please look at [TSConfig Reference](https://www.typescriptlang.org/tsconfig)<!-- -->. |
+|  [transformers?](./express-typescript-compile.compileoptions.transformers.md) | Array&lt;TransformerFactory&lt;SourceFile&gt; \| CustomTransformerFactory&gt; | <i>(Optional)</i> Custom additional source files transformers. |
+|  [tsConfigFile?](./express-typescript-compile.compileoptions.tsconfigfile.md) | string | <i>(Optional)</i> Path to tsconfig.json file, default is tsconfig.json in working dir. |
 

@@ -4,7 +4,7 @@
 
 ## CompileOptions.transformers property
 
-Custom additional source files transformers
+Custom additional source files transformers.
 
 <b>Signature:</b>
 

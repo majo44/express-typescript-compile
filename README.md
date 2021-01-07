@@ -1,16 +1,28 @@
 # express-typescript-compile
-Express.js on the fly typescript compilation middleware. 
+Express.js on the fly typescript compilation middleware. [Full documentation](https://majo44.github.io/express-typescript-compile/#/).
 
 ## Introduction
-The main porpoise of this package is to give ability for super simple, cheep and fast be able to 
-run the typescript code, both on the server and client side, without need of the project special 
-configuration, like configuration for the bundler, compiler ect. without need of tons of 
-dependencies. 
+The main purpose of this package is to give ability for super simple, cheep and fast typescript 
+code running, both, on the server and client side, without need of special
+configuration of project, like configuration for the bundler, compiler, without need of tons of
+dependencies.
 
-This is simple small express.js middleware which on the fly, during the request, compile typescript 
-source file to the javascript code. Such compiled source is cached and recompiled only after 
-the changes. As this process is not cheep such approach should be only use within the development 
-workflow, or for prototyping or demoing. On side, you can have the production configuration.    
+This package delivers express.js middleware which on the fly, during the request, transpile typescript 
+source file to the javascript code. Such transpiled source is cached and retranspiled only after 
+the changes. As transpilation is not cheep, such approach should be only use within the development 
+workflow, or for prototyping or demoing. On side, you can have the production configuration, 
+with the compiler, bundler, linter ect.    
+
+## Features
+* typescript/js code on the fly transpilation
+* minimal configuration
+* simple memory caching
+* tsconfig paths support
+* dynamic imports `import('abc')` support    
+* support common.js modules imports by aliasing or/and transformers
+* support json modules imports
+* support css imports
+* no impact on the code, and development workflow
 
 ## Installation
 
@@ -19,6 +31,9 @@ npm install express-typescript-compile
 ```
 
 ## Usage
+
+You can find bunch examples examples [here](./examples/).
+
 ### Example minimal setup
 This is an example of minimal runnable example of `express-typescript-compile` usage.
 In this example we are running the server typescript code trough `ts-node-dev`, and client code is 
@@ -67,8 +82,10 @@ app.listen(3000);
 // tsconfig.json
 {
     "compilerOptions": {
-        // This minimal config is required just because of 'express' import 
-        "esModuleInterop": true
+        // Required just because of 'express' import 
+        "esModuleInterop": true,
+        // As we are transpiling file by file, we have to use isolatedModules option
+        "isolatedModules": true
     }
 }
 ```
@@ -76,6 +93,7 @@ app.listen(3000);
 // package.json
 {
    "scripts": {
+      // runing server code by the ts-node-dev (or ts-node)
       "serve": "ts-node-dev -- src/index-server.ts"
    },
    "dependencies": {
@@ -89,8 +107,10 @@ app.listen(3000);
       "ts-node-dev": "^1.1.1"
    }
 }
-
 ```
+
+For more information please go to [Api Reference](./api).
+
 
 ## Live reload
 In order to use live page reload technique please use `easy-livereload` package like:
@@ -139,7 +159,6 @@ app.use(typescriptCompileMiddleware({
 // src/index-client.tsx
 import { createElement } from 'react';
 import { render } from 'react-dom';
-
 const root = document.createElement('div');
 document.body.append(root)
 render(<div>Hello word</div>, root);
@@ -174,11 +193,11 @@ app.use(typescriptCompileMiddleware({
 ```
 
 #### Mixing both techniques
-Transforming solution will not always solve the problem, some libraries (eg React) can't be handled
+Transforming solution will not always solve the problem, some libraries (eg `React`) can't be handled
 properly by the `cjstoesm` as the code contains the conditional imports/exports. 
 If we can't or do not want to use [skypack.dev](https://www.skypack.dev/) cdn, we can try to mix 
-aliases, which will firstly map imports to files which are easy to handle by the `cjstoesm`, and then 
-use `cjstoesm` transform for converts that files from common.js in to es modules.
+transformers with aliases, which will firstly map imports to file which are easy to handle by the 
+`cjstoesm`, and then use `cjstoesm` transform for converts that files from common.js in to es modules.
 ```typescript
 // src/index-server.ts
 import { cjsToEsmTransformerFactory } from "cjstoesm";
@@ -262,4 +281,16 @@ To import css files directly from your typescript source code you will have to
     app.use(express.static('.'));
     ```
    
-## TBC....
+## How it works
+1. the middleware on the *.ts, *.tsx files requests (eg. `http://localhost:3000/src/index.ts`) is 
+2. looking in cache and working dir for the file by the `request.path` (and `__mi_ctx` query parameter) (eg. `./src/index.ts`) 
+3. transpile file to es module (respecting tsconfig options) by the `typescript` package
+4. resolving all imports from the file by the aliases/typescript/enhanced-resolver 
+5. replacing all imports by resolved value and mark them by special (`__mi`) query parameter
+(eg. `import { app } from '/src/app/index.ts?__mi=true`,  
+   `import { crateElement } from '/node_modules/react/cjs/react.production.min.js?__mi=true`)
+6. if import is resolved to upper dir the additional (`__mi_ctx`) query param is added   
+   (eg. 
+   `import { crateElement } from '/node_modules/react/cjs/react.production.min.js?__mi=true&__mi_ctx=../../`)
+6. caching file   
+6. on the next request to marked resource > go to 2.

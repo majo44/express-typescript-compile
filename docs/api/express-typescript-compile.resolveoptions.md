@@ -2,12 +2,23 @@
 
 [Home](./index.md) &gt; [express-typescript-compile](./express-typescript-compile.md) &gt; [ResolveOptions](./express-typescript-compile.resolveoptions.md)
 
-## ResolveOptions type
+## ResolveOptions interface
 
 Options for node resolver. For more info please go to [enhanced-resolve](https://www.npmjs.com/package/enhanced-resolve) documentation.
 
 <b>Signature:</b>
 
 ```typescript
-export declare type ResolveOptions = Partial<ResolverResolveOptions>;
+export interface ResolveOptions extends Partial<ResolverResolveOptions> 
 ```
+<b>Extends:</b> Partial&lt;ResolverResolveOptions&gt;
+
+## Properties
+
+|  Property | Type | Description |
+|  --- | --- | --- |
+|  [alias?](./express-typescript-compile.resolveoptions.alias.md) | { \[index: string\]: string \| false \| string\[\]; } \| { alias: string \| false \| string\[\]; name: string; onlyModule?: boolean; }\[\] | <i>(Optional)</i> A list of module alias configurations or an object which maps key to value. |
+|  [conditionNames?](./express-typescript-compile.resolveoptions.conditionnames.md) | string\[\] | <i>(Optional)</i> A list of exports field condition names. Default: <code>['browser', 'module', 'import', 'node', 'default']</code>, |
+|  [extensions?](./express-typescript-compile.resolveoptions.extensions.md) | string\[\] | <i>(Optional)</i> A list of extensions which should be tried for files. Default <code>['.ts', '.tsx', '.js', '.cjs', '.mjs']</code>. |
+|  [mainFields?](./express-typescript-compile.resolveoptions.mainfields.md) | (string \| string\[\] \| { name: string \| string\[\]; forceRelative: boolean; })\[\] | <i>(Optional)</i> A list of main fields in description files. Default <code>['browser', 'module', 'import', 'jsnext:main', 'main']</code> |
+

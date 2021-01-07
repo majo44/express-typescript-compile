@@ -17,7 +17,7 @@ export declare function typescriptCompileMiddleware(options?: ExpressTypescriptC
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  options | [ExpressTypescriptCompileOptions](./express-typescript-compile.expresstypescriptcompileoptions.md) | options of middleware |
-|  logger | Logger | logging target, default <code>console</code> |
+|  logger | [Logger](./express-typescript-compile.logger.md) | logging target, default <code>console</code> |
 
 <b>Returns:</b>
 

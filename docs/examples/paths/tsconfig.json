@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "rootDir": "./",
+        "baseUrl": "./",
+        "paths": {
+            "@app": [
+                "./src/app"
+            ]
+        }
+    }
+}

@@ -18,6 +18,7 @@
 |  [CacheOptions](./express-typescript-compile.cacheoptions.md) | Caching options. |
 |  [CompileOptions](./express-typescript-compile.compileoptions.md) | Compiler options. |
 |  [ExpressTypescriptCompileOptions](./express-typescript-compile.expresstypescriptcompileoptions.md) | Middleware configuration options. |
+|  [ResolveOptions](./express-typescript-compile.resolveoptions.md) | Options for node resolver. For more info please go to [enhanced-resolve](https://www.npmjs.com/package/enhanced-resolve) documentation. |
 
 ## Variables
 
@@ -29,6 +30,6 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [Logger](./express-typescript-compile.logger.md) | Simple logger. Console can be used. |
 |  [LogLevel](./express-typescript-compile.loglevel.md) |  |
-|  [ResolveOptions](./express-typescript-compile.resolveoptions.md) | Options for node resolver. For more info please go to [enhanced-resolve](https://www.npmjs.com/package/enhanced-resolve) documentation. |
 

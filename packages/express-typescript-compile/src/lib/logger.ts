@@ -1,7 +1,8 @@
 import { Diagnostic, formatDiagnostics } from 'typescript';
 
 /**
- * @internal
+ * Simple logger. Console can be used.
+ * @public
  */
 export type Logger = Pick<Console, 'warn' | 'error' | 'info' | 'debug'>
 

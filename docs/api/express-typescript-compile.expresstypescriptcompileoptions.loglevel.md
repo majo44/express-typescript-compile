@@ -4,7 +4,7 @@
 
 ## ExpressTypescriptCompileOptions.logLevel property
 
-Logging level
+Logging level. Default `LogLevel.warn`
 
 <b>Signature:</b>
 

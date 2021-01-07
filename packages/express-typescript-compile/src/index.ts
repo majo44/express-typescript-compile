@@ -57,7 +57,7 @@ export function typescriptCompileMiddleware(
     const router = Router({ mergeParams: true });
 
     router.get('/modules-preload', modulesPreloadHandle(preloadList));
-    router.get('*', modulesImportHandler(config, sourceProvider));
+    router.get('*', modulesImportHandler(config, sourceProvider, log));
 
     return router;
 }
@@ -67,6 +67,7 @@ export {
 }
 
 export type {
+    Logger,
     ExpressTypescriptCompileOptions,
     CompileOptions,
     ResolveOptions,

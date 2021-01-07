@@ -1,6 +1,6 @@
 {
     "name": "express-typescript-compile",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "description": "Express.js on the fly typescript compilation middleware",
     "keywords": [
         "typescript",
@@ -29,13 +29,17 @@
     ],
     "scripts": {
         "api": "api-extractor run --local && api-documenter markdown -i ./temp -o ../../docs/api",
-        "build": "yarn clean && yarn lint && yarn test:coverage && yarn compile && yarn api",
+        "api:update": "yarn compile:cjs && yarn api",
+        "build": "yarn clean && yarn lint && yarn test:coverage && yarn compile && yarn api && yarn readme",
         "clean": "rimraf dist coverage",
         "compile": "yarn compile:cjs && yarn compile:esm",
         "compile:cjs": "tsc --outDir dist/dist-cjs --module CommonJS",
         "compile:esm": "tsc --outDir dist/dist-esm --module ESNext",
         "lint": "eslint ./**/*.ts --fix",
         "prepublishOnly": "yarn build",
+        "readme": "yarn readme1 && yarn readme2",
+        "readme1": "copyfiles ../../docs/README.md ../../ -f && replace-in-files --string=\"](./\" --replacement=\"](./docs/\" README.md",
+        "readme2": "copyfiles ../../docs/README.md ./ -f",
         "test": "ts-mocha -p tsconfig.test.json src/**/*.spec.ts",
         "test:coverage": "nyc yarn test",
         "test:watch": "ts-mocha --watch -p tsconfig.test.json src/**/*.spec.ts"
@@ -102,6 +106,7 @@
         "eslint": "^7.16.0",
         "eslint-plugin-tsdoc": "^0.2.10",
         "chai": "^4.2.0",
+        "copyfiles": "^2.4.1",
         "mocha": "^8.2.1",
         "replace-in-files-cli": "^1.0.0",
         "rimraf": "^3.0.2",

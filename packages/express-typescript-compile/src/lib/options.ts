@@ -12,16 +12,17 @@ import { LogLevel } from './logger';
  */
 export interface CompileOptions {
     /**
-     * Path to tsconfig.json file, default is tsconfig.json in working dir
+     * Path to tsconfig.json file, default is tsconfig.json in working dir.
      */
     tsConfigFile?: string,
     /**
-     * Overwrites for the tsconfig.json
+     * Overwrites for the tsconfig.json compilerOptions options.
+     * For more info please look at {@link https://www.typescriptlang.org/tsconfig | TSConfig Reference}.
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     compilerOptions?: any;
     /**
-     * Custom additional source files transformers
+     * Custom additional source files transformers.
      */
     transformers?: Array<TransformerFactory<SourceFile> | CustomTransformerFactory>
 }
@@ -32,7 +33,37 @@ export interface CompileOptions {
  * documentation.
  * @public
  */
-export type ResolveOptions = Partial<ResolverResolveOptions>
+export interface ResolveOptions extends Partial<ResolverResolveOptions> {
+    /**
+     * A list of module alias configurations or an object which maps key to value.
+     */
+    alias?:
+        | { [index: string]: string | false | string[] }
+        | {
+        alias: string | false | string[];
+        name: string;
+        onlyModule?: boolean;
+    }[];
+    /**
+     * A list of extensions which should be tried for files.
+     * Default `['.ts', '.tsx', '.js', '.cjs', '.mjs']`.
+     */
+    extensions?: string[];
+    /**
+     * A list of main fields in description files.
+     * Default `['browser', 'module', 'import', 'jsnext:main', 'main']`
+     */
+    mainFields?: (
+        | string
+        | string[]
+        | { name: string | string[]; forceRelative: boolean }
+        )[];
+    /**
+     * A list of exports field condition names.
+     * Default: `['browser', 'module', 'import', 'node', 'default']`,
+     */
+    conditionNames?: string[];
+}
 
 /**
  * Value stored in cache.
@@ -91,11 +122,13 @@ export interface ExpressTypescriptCompileOptions {
      */
     cache?: CacheOptions;
     /**
-     * Logging level
+     * Logging level.
+     * Default `LogLevel.warn`
      */
     logLevel?: LogLevel;
     /**
      * Working dir.
+     * @internal
      */
     cwd?: string;
 }
@@ -113,7 +146,8 @@ export function prepareConfig(config: ExpressTypescriptCompileOptions): Required
         },
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.cjs', '.mjs'],
-            mainFields: ['module', 'main'],
+            mainFields: ['browser', 'module', 'import', 'jsnext:main', 'main'],
+            conditionNames: ['browser', 'module', 'import', 'node', 'default'],
             ...config.resolve
         },
         cache: {
@@ -124,7 +158,7 @@ export function prepareConfig(config: ExpressTypescriptCompileOptions): Required
             },
             ...config.cache
         },
-        logLevel: config.logLevel || LogLevel.info,
+        logLevel: config.logLevel || LogLevel.warn,
         cwd: config.cwd || process.cwd()
     };
 }

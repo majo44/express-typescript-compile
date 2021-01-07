@@ -60,10 +60,13 @@ export function createResolver(
      */
     const compilerHost = createCompilerHost(compilerOptions);
 
+    logger.debug('create resolver with options:', options);
+
     /**
      * Prepare base resolver
      */
     const resolver = ResolverFactory.createResolver({
+        cacheWithContext: false,
         fileSystem: new CachedInputFileSystem(fs, 4000),
         useSyncFileSystemCalls: true,
         ...options

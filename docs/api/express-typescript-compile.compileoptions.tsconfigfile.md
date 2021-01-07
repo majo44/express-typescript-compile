@@ -4,7 +4,7 @@
 
 ## CompileOptions.tsConfigFile property
 
-Path to tsconfig.json file, default is tsconfig.json in working dir
+Path to tsconfig.json file, default is tsconfig.json in working dir.
 
 <b>Signature:</b>
 

@@ -38,7 +38,7 @@ export const createTranspiler = (
             fileName: basename(file),
             compilerOptions,
             transformers: {
-                before: [
+                after: [
                     ...transformers,
                     createImportsTransformer(cwd, resolve, file, preloadList)
                 ]

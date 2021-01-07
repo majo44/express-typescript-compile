@@ -51,10 +51,12 @@
                 }
             });
 
+            const examples = ['minimal',  'css', 'json', 'live', 'paths', 'react-cdn', 'react-transform'];
+
             window.$docsify =  {
                 name: 'express-typescript-compile',
                 repo: 'https://github.com/majo44/express-typescript-compile',
-                loadSidebar: true,
+                loadSidebar: 'sidebar.md',
                 subMaxLevel: 10,
                 count: {
                     countable: true,
@@ -64,10 +66,14 @@
                 basePath: window.location.pathname.indexOf('index.html') > -1 ? '../' : '.',
                 plugins: [].concat(docsifyApiReferencePlugin, window.$docsify.plugins || []),
                 alias: {
-                    '/api/_sidebar.md' : '/_api_sidebar.md'
+                    '/api/sidebar.md' : 'sidebar_api.md',
+                    '/examples/sidebar.md' : 'sidebar_examples.md',
+                    ...examples.reduce((r, i) => ({
+                        ...r,
+                        [`/examples/${i}/sidebar.md`]: 'sidebar_examples_internal.md'
+                    }), {})
                 }
             };
-
         })();
     </script>
     <div id="app"></div>

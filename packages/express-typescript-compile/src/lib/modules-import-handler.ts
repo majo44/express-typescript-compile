@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { extname } from 'path';
 import { importContextQueryParam, importQueryParam } from './create-imports-transformer';
+import { Logger } from './logger';
 import { ExpressTypescriptCompileOptions } from './options';
 
 /**
@@ -8,11 +9,16 @@ import { ExpressTypescriptCompileOptions } from './options';
  * @internal
  * @param config - configuration
  * @param sourceProvider - source provider
+ * @param logger - logger
  */
 export const modulesImportHandler = (
     config: Required<ExpressTypescriptCompileOptions>,
-    sourceProvider: (file: string) => Promise<string>): RequestHandler =>
-    async (req, res, next) => {
+    sourceProvider: (file: string) => Promise<string>,
+    logger: Logger): RequestHandler => {
+
+    const { extensions } = config.resolve;
+
+    return async (req, res, next) => {
         let source: string | undefined;
 
         const importQuery = req.query[importQueryParam];
@@ -23,17 +29,27 @@ export const modulesImportHandler = (
             ? importContextQuery
             : undefined;
 
-        const ext = extname(req.path);
-        if (req.moduleImport
-            && (config.resolve?.extensions?.indexOf(ext) || -1) > -1) {
-            source = await sourceProvider(`${req.moduleImportContext || ''}${req.path}`);
-        } else if (req.path.endsWith('.ts') || req.path.endsWith('.tsx')) {
-            source = await sourceProvider(req.path);
-        }
-        if (source) {
-            res.contentType('application/javascript');
-            res.send(source);
-        } else {
-            next();
+        const { path, originalUrl, moduleImport } = req;
+        const ext = extname(path);
+
+        try {
+            if (moduleImport && (!extensions || extensions.indexOf(ext) > -1)) {
+                logger.debug(`handling ${originalUrl} by moduleImport/extension match`);
+                source = await sourceProvider(`${req.moduleImportContext || ''}${path}`);
+            } else if (path.endsWith('.ts') || path.endsWith('.tsx')) {
+                logger.debug(`handling ${originalUrl} by direct ts/tsx import match`);
+                source = await sourceProvider(path);
+            }
+            if (source) {
+                res.contentType('application/javascript');
+                res.send(source);
+            } else {
+                next();
+            }
+        } catch (e) {
+            logger.error(`problem with transpile a requested module ${originalUrl}`, e);
+            res.statusCode = 500;
+            res.send(`Problem with transpile a requested module ${originalUrl}: ${e.message}`);
         }
     };
+}

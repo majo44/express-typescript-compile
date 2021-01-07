@@ -4,7 +4,7 @@
 
 ## CompileOptions.compilerOptions property
 
-Overwrites for the tsconfig.json
+Overwrites for the tsconfig.json compilerOptions options. For more info please look at [TSConfig Reference](https://www.typescriptlang.org/tsconfig)<!-- -->.
 
 <b>Signature:</b>
 
