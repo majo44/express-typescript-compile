@@ -10,6 +10,8 @@ npm run serve
 ## project structure
 ```
 ├── src
+│   ├── app
+│   │   └── index.ts       // app shared code
 │   ├── index-client.ts    // client side code
 │   └── index-server.ts    // server entry point
 ├── index.html             // client entry html page
