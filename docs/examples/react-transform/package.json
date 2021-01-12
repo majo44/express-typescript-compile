@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "serve": "ts-node-dev -r tsconfig-paths/register -- src/index-server.ts"
+        "serve": "ts-node-dev -- src/index-server.ts"
     },
     "dependencies": {
         "express": "^4.17.1",

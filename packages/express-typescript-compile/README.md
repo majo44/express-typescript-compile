@@ -23,6 +23,7 @@ with the compiler, bundler, linter ect.
 * support json modules imports
 * support css imports
 * no impact on the code, and development workflow
+* rich configuration
 
 ## Installation
 
@@ -32,7 +33,7 @@ npm install express-typescript-compile
 
 ## Usage
 
-You can find bunch examples examples [here](./examples/).
+You can find bunch examples [here](https://majo44.github.io/express-typescript-compile/#/examples/).
 
 ### Example minimal setup
 This is an example of minimal runnable example of `express-typescript-compile` usage.
@@ -78,7 +79,7 @@ app.get('/', (req, res) => res.sendFile(process.cwd() + '/index.html'));
 app.listen(3000);
 ```
 
-```json
+```text
 // tsconfig.json
 {
     "compilerOptions": {
@@ -89,7 +90,7 @@ app.listen(3000);
     }
 }
 ```
-```json
+```text
 // package.json
 {
    "scripts": {
@@ -109,7 +110,7 @@ app.listen(3000);
 }
 ```
 
-For more information please go to [Api Reference](./api).
+For more information please go to [Api Reference](https://majo44.github.io/express-typescript-compile/#/api/index).
 
 
 ## Live reload
