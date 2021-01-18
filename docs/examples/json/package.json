@@ -7,8 +7,9 @@
     },
     "dependencies": {
         "express": "^4.17.1",
+        "express-typescript-compile": "0.3.0",
         "tslib": "^2.0.3",
-        "json-es6-loader": "^1.1.0"
+        "json-es6-loader": "^1.1.0",
     },
     "devDependencies": {
         "@types/express": "^4.17.9",
