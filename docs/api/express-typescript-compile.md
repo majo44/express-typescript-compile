@@ -24,6 +24,7 @@
 
 |  Variable | Description |
 |  --- | --- |
+|  [getUrlForFile](./express-typescript-compile.geturlforfile.md) | Generates import url for the provided file. |
 |  [LogLevel](./express-typescript-compile.loglevel.md) |  |
 
 ## Type Aliases

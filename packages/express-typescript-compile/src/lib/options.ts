@@ -35,6 +35,10 @@ export interface CompileOptions {
  */
 export interface ResolveOptions extends Partial<ResolverResolveOptions> {
     /**
+     * A list of external modules.
+     */
+    externals?: Array<string | RegExp>;
+    /**
      * A list of module alias configurations or an object which maps key to value.
      */
     alias?:

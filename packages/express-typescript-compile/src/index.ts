@@ -14,6 +14,7 @@ import {
     CacheOptions
 } from './lib/options';
 import { modulesImportHandler } from './lib/modules-import-handler';
+export * from './lib/utils/get-url-for-file';
 
 /**
  * Overloading global Express namespace to enhance the Request object declaration.

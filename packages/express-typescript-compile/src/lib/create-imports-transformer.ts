@@ -8,18 +8,8 @@ import {
     visitEachChild
 } from 'typescript';
 
-import { relative,  } from 'path'
 import { Resolver } from './create-resolver';
-
-/**
- * @internal
- */
-export const importQueryParam = '__mi';
-
-/**
- * @internal
- */
-export const importContextQueryParam = '__mi_ctx';
+import { getUrlForFile } from './utils/get-url-for-file';
 
 /**
  * Create source code transformer
@@ -42,17 +32,12 @@ export function createImportsTransformer(
     const url = (target: string ): string => {
         let url: string | undefined;
         const resolution = resolve(file, target);
-        if (resolution.isUrl) {
+        if (resolution.isExternal) {
+            url = resolution.resolution;
+        } else  if (resolution.isUrl) {
             url = resolution.resolution;
         } else {
-            let resolved = relative(cwd, resolution.resolution);
-            resolved = resolved.replace(/\\/g, '/');
-            let context = '';
-            while (resolved.startsWith(`../`)) {
-                context += `../`;
-                resolved = resolved.substr(3);
-            }
-            url = `/${resolved}?${importQueryParam}=true${context ? `&${importContextQueryParam}=${context}` : ''}`;
+            url = getUrlForFile(cwd, resolution.resolution);
         }
         if (preloadList.indexOf(url) < 0) {
             preloadList.push(url);

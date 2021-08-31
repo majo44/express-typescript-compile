@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "express": "^4.17.1",
-        "express-typescript-compile": "0.3.0",
+        "express-typescript-compile": "0.4.1",
         "tslib": "^2.0.3"
     },
     "devDependencies": {

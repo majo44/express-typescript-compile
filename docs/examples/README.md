@@ -2,7 +2,7 @@
 
 [Minimal setup example](./minimal/)
 
-[tsconfig paths example](./paths/)
+[Tsconfig paths example](./paths/)
 
 [Css imports example](./css/)
 
@@ -10,6 +10,8 @@
 
 [Live reload example](./live/)
 
-[React (cdn) example](./react-cdn/)
+[React cdn example](./react-cdn/)
 
-[React (cjs to esm transform) example](./react-transform/)
+[React import map example](./react-import-map/)
+
+[React cjs to esm transform example](./react-transform/)

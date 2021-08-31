@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 import { extname } from 'path';
-import { importContextQueryParam, importQueryParam } from './create-imports-transformer';
 import { Logger } from './logger';
 import { ExpressTypescriptCompileOptions } from './options';
+import { importContextQueryParam, importQueryParam } from './utils/get-url-for-file';
 
 /**
  * Request handler which is responsible for serving es6 module source code.

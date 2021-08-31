@@ -20,5 +20,6 @@ export interface ResolveOptions extends Partial<ResolverResolveOptions>
 |  [alias?](./express-typescript-compile.resolveoptions.alias.md) | { \[index: string\]: string \| false \| string\[\]; } \| { alias: string \| false \| string\[\]; name: string; onlyModule?: boolean; }\[\] | <i>(Optional)</i> A list of module alias configurations or an object which maps key to value. |
 |  [conditionNames?](./express-typescript-compile.resolveoptions.conditionnames.md) | string\[\] | <i>(Optional)</i> A list of exports field condition names. Default: <code>['browser', 'module', 'import', 'node', 'default']</code>, |
 |  [extensions?](./express-typescript-compile.resolveoptions.extensions.md) | string\[\] | <i>(Optional)</i> A list of extensions which should be tried for files. Default <code>['.ts', '.tsx', '.js', '.cjs', '.mjs']</code>. |
+|  [externals?](./express-typescript-compile.resolveoptions.externals.md) | Array&lt;string \| RegExp&gt; | <i>(Optional)</i> A list of external modules. |
 |  [mainFields?](./express-typescript-compile.resolveoptions.mainfields.md) | (string \| string\[\] \| { name: string \| string\[\]; forceRelative: boolean; })\[\] | <i>(Optional)</i> A list of main fields in description files. Default <code>['browser', 'module', 'import', 'jsnext:main', 'main']</code> |
 

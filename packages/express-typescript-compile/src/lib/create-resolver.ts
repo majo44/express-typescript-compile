@@ -34,6 +34,10 @@ export interface Resolution {
      * is resolved by the node resolver
      */
     isNode?: boolean;
+    /**
+     * is external
+     */
+    isExternal?: boolean;
 }
 
 /**
@@ -72,6 +76,14 @@ export function createResolver(
         ...options
     });
 
+    const externalMatch = (target: string) => (val: string | RegExp): boolean => {
+        if (typeof val === 'string') {
+            return val === target;
+        } else {
+            return val.test(target);
+        }
+    }
+
     /**
      * Is checking alias is a absolute url.
      * @param target - target dependency
@@ -96,6 +108,11 @@ export function createResolver(
 
     return (context: string, target: string): Resolution => {
         const prefix =`import of: '${target}'\n from: '${context}\n`;
+        // is external
+        if (options.externals && options.externals.find(externalMatch(target))) {
+            logger.debug(`${prefix} resolved as external`);
+            return { context, target, resolution: target, isExternal: true }
+        }
         // is a absolute url
         const urlAlias = checkAliasForUrl(target);
         if (urlAlias) {
@@ -123,11 +140,15 @@ export function createResolver(
                 logger.debug(`${prefix} resolved by enhanced-resolver to: ${nodeResolution}`);
                 return {
                     isNode: true,
-                    context, target, resolution: nodeResolution
+                    context,
+                    target,
+                    resolution: nodeResolution
                 }
             }
         // eslint-disable-next-line no-empty
-        } catch (e) {}
+        } catch (e) {
+            logger.debug(loggerPrefix, 'enhanced-resolver error:', e);
+        }
 
         logger.error(`${prefix} not resolved !!!`);
         throw new Error(`${loggerPrefix} resolution not found for ${target} imported by ${context}`);
