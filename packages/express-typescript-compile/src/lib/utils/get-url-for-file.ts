@@ -12,6 +12,7 @@ export const importContextQueryParam = '__mi_ctx';
 
 /**
  * Generates import url for the provided file.
+ * @public
  * @param base - the base path
  * @param file - the path to file
  */

@@ -35,7 +35,7 @@ export const createTranspiler = (
     async (file): Promise<string> => {
         const source = (await readFile(file)).toString('utf8');
         const result = transpileModule(source, {
-            fileName: basename(file),
+            fileName: file,
             compilerOptions,
             transformers: {
                 after: [

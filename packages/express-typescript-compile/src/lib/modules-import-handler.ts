@@ -46,7 +46,7 @@ export const modulesImportHandler = (
             } else {
                 next();
             }
-        } catch (e) {
+        } catch (e: any) {
             logger.error(`problem with transpile a requested module ${originalUrl}`, e);
             res.statusCode = 500;
             res.send(`Problem with transpile a requested module ${originalUrl}: ${e.message}`);
