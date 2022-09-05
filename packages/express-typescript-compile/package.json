@@ -1,6 +1,6 @@
 {
     "name": "express-typescript-compile",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "Express.js on the fly typescript compilation middleware",
     "keywords": [
         "typescript",
@@ -89,7 +89,7 @@
     },
     "dependencies": {
         "enhanced-resolve": "^5.8.2",
-        "tslib": "^2.0.3"
+        "tslib": "^2.4.0"
     },
     "devDependencies": {
         "@microsoft/api-documenter": "^7.12.1",
@@ -114,10 +114,10 @@
         "sinon-chai": "^3.5.0",
         "supertest": "^6.0.1",
         "ts-mocha": "^8.0.0",
-        "typescript": "^4.1.3"
+        "typescript": "^4.5.0"
     },
     "peerDependencies": {
         "express": "^4.17.1",
-        "typescript": "^4.1.0"
+        "typescript": "^4.5.0"
     }
 }

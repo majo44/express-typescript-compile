@@ -50,11 +50,11 @@ export function createImportsTransformer(
         const visitor = <T extends Node>(node: T): T => {
             // dynamic import call
             if (isCallExpression(node) && node.expression.kind === SyntaxKind.ImportKeyword) {
-                const arg = node.arguments[0];
+                const [arg, ...rest] = node.arguments;
                 if (isStringLiteral(arg)) {
                     return context.factory.updateCallExpression(
                         node, node.expression, node.typeArguments, [
-                            context.factory.createStringLiteral(url(arg.text))]) as typeof node;
+                            context.factory.createStringLiteral(url(arg.text)), ...rest]) as typeof node;
                 }
                 // todo report problematic import
             }
@@ -63,8 +63,9 @@ export function createImportsTransformer(
                 const moduleSpecifier = node.moduleSpecifier;
                 if (moduleSpecifier && isStringLiteral(moduleSpecifier)) {
                     return context.factory.updateExportDeclaration(
-                        node, node.decorators, node.modifiers, node.isTypeOnly, node.exportClause,
-                        context.factory.createStringLiteral(url(moduleSpecifier.text))) as typeof node;
+                        node, node.modifiers, node.isTypeOnly, node.exportClause,
+                        context.factory.createStringLiteral(url(moduleSpecifier.text)),
+                        node.assertClause) as typeof node;
                 }
             }
             // import ... from ...
@@ -72,8 +73,9 @@ export function createImportsTransformer(
                 const moduleSpecifier = node.moduleSpecifier;
                 if (isStringLiteral(moduleSpecifier)) {
                     return context.factory.updateImportDeclaration(
-                        node, node.decorators, node.modifiers, node.importClause,
-                        context.factory.createStringLiteral(url(moduleSpecifier.text))) as typeof node;
+                        node, node.modifiers, node.importClause,
+                        context.factory.createStringLiteral(url(moduleSpecifier.text)),
+                        node.assertClause) as typeof node;
                 }
                 return node;
             }
