@@ -1,15 +1,19 @@
 import {
+    getJSDocTags,
     isCallExpression,
     isExportDeclaration,
     isImportDeclaration,
     isStringLiteral,
-    Node, SourceFile, SyntaxKind,
-    TransformationContext, TransformerFactory,
+    Node,
+    SourceFile,
+    SyntaxKind,
+    TransformationContext,
+    TransformerFactory,
     visitEachChild
 } from 'typescript';
 
-import { Resolver } from './create-resolver';
-import { getUrlForFile } from './utils/get-url-for-file';
+import {Resolver} from './create-resolver';
+import {getUrlForFile} from './utils/get-url-for-file';
 
 /**
  * Create source code transformer
@@ -24,6 +28,16 @@ export function createImportsTransformer(
     resolve: Resolver,
     file: string,
     preloadList: Array<string>): TransformerFactory<SourceFile> {
+
+    const checkIgnore = (node: Node) => {
+        const tags = getJSDocTags(node);
+        for (const tag of tags) {
+            if (tag?.tagName?.escapedText === 'etc-ignore') {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Creates import url.
@@ -47,9 +61,12 @@ export function createImportsTransformer(
 
     return (context: TransformationContext) => {
         // creates visitor
-        const visitor = <T extends Node>(node: T): T => {
+        const visitor = <T extends Node>(node: T): T | undefined => {
             // dynamic import call
             if (isCallExpression(node) && node.expression.kind === SyntaxKind.ImportKeyword) {
+                if (checkIgnore(node)) {
+                    return undefined;
+                }
                 const [arg, ...rest] = node.arguments;
                 if (isStringLiteral(arg)) {
                     return context.factory.updateCallExpression(
@@ -60,6 +77,9 @@ export function createImportsTransformer(
             }
             // export ... from ...
             if (isExportDeclaration(node) && !node.isTypeOnly) {
+                if (checkIgnore(node)) {
+                    return undefined;
+                }
                 const moduleSpecifier = node.moduleSpecifier;
                 if (moduleSpecifier && isStringLiteral(moduleSpecifier)) {
                     return context.factory.updateExportDeclaration(
@@ -70,6 +90,9 @@ export function createImportsTransformer(
             }
             // import ... from ...
             if (isImportDeclaration(node) && !node.importClause?.isTypeOnly) {
+                if (checkIgnore(node)) {
+                    return undefined;
+                }
                 const moduleSpecifier = node.moduleSpecifier;
                 if (isStringLiteral(moduleSpecifier)) {
                     return context.factory.updateImportDeclaration(

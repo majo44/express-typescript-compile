@@ -1,6 +1,6 @@
 {
     "name": "express-typescript-compile",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "Express.js on the fly typescript compilation middleware",
     "keywords": [
         "typescript",
